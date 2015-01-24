@@ -106,7 +106,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc Docs/{History.txt,License.txt}
 %attr(755,root,root) %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
-%{_prefix}/lib/%{name}
+%dir %{_prefix}/lib/%{name}
+%attr(755,root,root) %{_prefix}/lib/%{name}/KeePass.exe
+%{_prefix}/lib/%{name}/KeePass.config.xml
+%{_prefix}/lib/%{name}/KeePass.exe.config
 %{_datadir}/%{name}
 %{_desktopdir}/%{name}.desktop
 %{_datadir}/appdata/keepass.appdata.xml
