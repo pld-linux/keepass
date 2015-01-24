@@ -75,13 +75,13 @@ xbuild /target:KeePass /property:Configuration=Release
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_prefix}/lib/%{name},%{_datadir}/%{name}/XSL,%{_desktopdir},%{_bindir},%{_datadir}/mime/packages,%{_datadir}/icons/hicolor/256x256/apps,%{_mandir}/man1,%{_docdir}/%{name},%{_datadir}/appdata}
+install -d $RPM_BUILD_ROOT{%{_prefix}/lib/%{name}/plugins,%{_datadir}/%{name}/XSL,%{_desktopdir},%{_bindir},%{_datadir}/mime/packages,%{_iconsdir}/hicolor/256x256/apps,%{_mandir}/man1,%{_docdir}/%{name},%{_datadir}/appdata}
 
 install -p Build/KeePass/Release/KeePass.exe Ext/KeePass{.config.xml,.exe.config} $RPM_BUILD_ROOT%{_appdir}
 install -p Ext/XSL/{KDBX_DetailsFull.xsl,KDBX_DetailsLite.xsl,KDBX_PasswordsOnly.xsl,KDBX_Styles.css,KDBX_Tabular.xsl,TableHeader.gif} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/XSL
 
-install -p -T Ext/Icons/Finals/plockb.png $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
+install -p -T Ext/Icons/Finals/plockb.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/256x256/apps/%{name}.png
 desktop-file-install --dir=$RPM_BUILD_ROOT%{_desktopdir} dist/%{name}.desktop
 cp -p dist/%{name}.xml $RPM_BUILD_ROOT%{_datadir}/mime/packages
 cp -p dist/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
@@ -110,6 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_prefix}/lib/%{name}/KeePass.exe
 %{_prefix}/lib/%{name}/KeePass.config.xml
 %{_prefix}/lib/%{name}/KeePass.exe.config
+%dir %{_prefix}/lib/%{name}/plugins
 %{_datadir}/%{name}
 %{_desktopdir}/%{name}.desktop
 %{_datadir}/appdata/keepass.appdata.xml
