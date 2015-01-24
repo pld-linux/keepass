@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_with	doc		# don't build doc
 
+%include	/usr/lib/rpm/macros.mono
 Summary:	Password manager
 Name:		keepass
 Version:	2.27
@@ -25,11 +26,12 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	mono-devel
 BuildRequires:	python-devel
 BuildRequires:	rpmbuild(macros) >= 1.566
+BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	hicolor-icon-theme
-Requires:	mono
+Requires:	libgdiplus
 Requires:	xdotool
 Requires:	xsel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
