@@ -29,6 +29,7 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	hicolor-icon-theme
+Requires:	mono
 Requires:	xdotool
 Requires:	xsel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
