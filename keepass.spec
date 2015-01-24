@@ -45,7 +45,9 @@ select the key file to unlock the whole database.
 
 %package doc
 Summary:	Documentation for the KeePass password manager
+%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
+%endif
 
 %description doc
 Documentation for KeePass, a free open source password manager.
