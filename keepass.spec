@@ -32,6 +32,7 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	hicolor-icon-theme
 Requires:	libgdiplus
+Requires:	xdg-utils
 Requires:	xdotool
 Requires:	xsel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)

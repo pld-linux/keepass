@@ -2,7 +2,7 @@ From: Julian Taylor <jtaylor.debian@googlemail.com>
 Date: Tue, 12 Jul 2011 21:51:43 +0200
 Subject: enable local help
 
-disable windows chm viewer and use x-www-browser to view docs
+disable windows chm viewer and use xdg-open to view docs
 located as html files in "/usr/share/doc/keepass2/Chm/help/"
 Forwarded: not-needed
 ---
@@ -47,11 +47,11 @@ Forwarded: not-needed
 -			strCmd += "\"";
 -
 -			try { Process.Start(WinUtil.LocateSystemApp("hh.exe"), strCmd); }
-+			try { Process.Start("x-www-browser", strCmd); }
++			try { Process.Start("xdg-open", strCmd); }
  			catch(Exception exStart)
  			{
 -				MessageService.ShowWarning(@"hh.exe " + strCmd, exStart);
-+				MessageService.ShowWarning(@"x-www-browser " + strCmd, exStart);
++				MessageService.ShowWarning(@"xdg-open " + strCmd, exStart);
  			}
  		}
  
