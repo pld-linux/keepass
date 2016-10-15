@@ -5,14 +5,15 @@
 %include	/usr/lib/rpm/macros.mono
 Summary:	Password manager
 Name:		keepass
-Version:	2.27
+Version:	2.34
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 # Created with, e.g.:
 # version=2.25 tmpdir=`mktemp -d` && cd $tmpdir && curl -LRO http://downloads.sourceforge.net/project/keepass/KeePass%202.x/$version/KeePass-$version-Source.zip && mkdir keepass-$version && unzip -d keepass-$version KeePass-$version-Source.zip && find keepass-$version -name "*dll" -delete && tar -cJf keepass-$version.tar.xz keepass-$version
-Source0:	http://pkgs.fedoraproject.org/repo/pkgs/keepass/%{name}-%{version}.tar.xz/5a4e243b7f3784db99a3f5e3ede2493b/keepass-%{version}.tar.xz
-# Source0-md5:	5a4e243b7f3784db99a3f5e3ede2493b
+#Source0:	http://pkgs.fedoraproject.org/repo/pkgs/keepass/%{name}-%{version}.tar.xz/5a4e243b7f3784db99a3f5e3ede2493b/keepass-%{version}.tar.xz
+Source0:	https://downloads.sourceforge.net/project/keepass/KeePass%202.x/%{version}/KeePass-%{version}-Source.zip
+# Source0-md5:	d810976648df7e16053801d250962cdf
 # Upstream does not include a .desktop file, etc..
 Patch0:		%{name}-desktop-integration.patch
 Patch3:		%{name}-appdata.patch
@@ -23,12 +24,14 @@ Patch2:		%{name}-enable-local-help.patch
 URL:		http://keepass.info/
 %{?with_doc:BuildRequires:	archmage}
 BuildRequires:	desktop-file-utils
+BuildRequires:	libgdiplus-devel
 BuildRequires:	mono-devel
 BuildRequires:	python-devel
 BuildRequires:	rpmbuild(macros) >= 1.566
 BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
+BuildRequires:	xorg-xserver-Xvfb
 BuildRequires:	xz
 Requires:	hicolor-icon-theme
 Requires:	libgdiplus
@@ -56,7 +59,7 @@ BuildArch:	noarch
 Documentation for KeePass, a free open source password manager.
 
 %prep
-%setup -q
+%setup -q -c
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -69,6 +72,13 @@ cd Build
 sh PrepMonoDev.sh
 cd -
 
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+
+xbuild /target:KeePass /property:Configuration=Release
+for subdir in Images_App_HighRes Images_Client_16 Images_Client_HighRes; do
+	xvfb-run -a mono Build/KeePass/Release/KeePass.exe -d:`pwd`/Ext/$subdir --makexspfile `pwd`/KeePass/Resources/Data/$subdir.bin
+done
 xbuild /target:KeePass /property:Configuration=Release
 %if %{with doc}
 %{__python} -c 'import archmod.CHM; archmod.CHM.CHMDir("Docs").process_templates("Docs/Chm")'
@@ -82,7 +92,7 @@ install -p Build/KeePass/Release/KeePass.exe Ext/KeePass{.config.xml,.exe.config
 install -p Ext/XSL/{KDBX_DetailsFull.xsl,KDBX_DetailsLite.xsl,KDBX_PasswordsOnly.xsl,KDBX_Styles.css,KDBX_Tabular.xsl,TableHeader.gif} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/XSL
 
-install -p -T Ext/Icons/Finals/plockb.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/256x256/apps/%{name}.png
+install -p -T Ext/Icons_15_VA/KeePass_Round/KeePass_Round_256.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/256x256/apps/%{name}.png
 desktop-file-install --dir=$RPM_BUILD_ROOT%{_desktopdir} dist/%{name}.desktop
 cp -p dist/%{name}.xml $RPM_BUILD_ROOT%{_datadir}/mime/packages
 cp -p dist/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
