@@ -2,7 +2,6 @@
 # Conditional build:
 %bcond_with	doc		# don't build doc
 
-%include	/usr/lib/rpm/macros.mono
 Summary:	Password manager
 Name:		keepass
 Version:	2.34
